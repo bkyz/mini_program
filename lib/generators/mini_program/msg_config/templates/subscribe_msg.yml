@@ -1,0 +1,11 @@
+---
+progress:
+  template_id: YQ0cmL_ugsXwPaA2Pl75IMo_qtoc1n6CtT1orIeX4_o
+  page: "/pages/index/index"
+  data:
+    thing2:
+      value: "%{title}"
+    phrase4:
+      value: "%{state}"
+    thing1:
+      value: "%{detail}"
