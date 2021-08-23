@@ -81,7 +81,7 @@ msg = MiniProgram::Msg.new(:progress, {
 })
 
 # send_to 的参数可以是 openid(字符串)，或者是带有 open_id 方法的对象，返回 MiniProgram::ServiceResult
-result msg.send_to("ogT7J5YddGnll-ippRvJq62Nv5W0")
+result = msg.send_to("ogT7J5YddGnll-ippRvJq62Nv5W0")
 
 # or
 user = User.first
