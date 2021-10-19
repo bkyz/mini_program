@@ -15,7 +15,7 @@ module MiniProgram
                    data: {})
       self.success = success
       self.data = (data.presence || {}).with_indifferent_access
-      self.errors = errors.is_a?(Enumerable) ? errors : [errors]
+      self.errors = errors.is_a?(Array) ? errors : [errors]
       self.message = message
       self.message_type = message_type
     end
