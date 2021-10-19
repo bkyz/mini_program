@@ -51,7 +51,10 @@ iv = "5tiyfVEHNVgHN4n8lzDrUA=="
 result = mp.get_phone_num(code: code, encrypted_data: encrypted_data, iv: iv)
 
 if result.success?
-  phone_num = result[:phone_num]
+  phone_num = result.data[:phone] 
+  
+  # 或者直接使用 [] 方法获取
+  # phone_num = result[:phone_num]
 end
 
 ```
