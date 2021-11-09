@@ -162,7 +162,7 @@ module MiniProgram
       MiniProgram::ServiceResult.new(
         success: true,
         data: {
-          open_id: open_id,
+          openid: open_id,
           phone_num: phone_num
       })
     end
