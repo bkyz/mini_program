@@ -92,6 +92,10 @@ module MiniProgram
       MiniProgram::ServiceResult.new(success: true, data: result)
     end
 
+    def mini_program_login
+      
+    end
+
     # 发送订阅消息
     # @param [MiniProgram::Msg] msg
     # @param [String] to 用户的open id
@@ -110,6 +114,30 @@ module MiniProgram
       result = post(api, payload)
 
       msg_logger.info {"{params: #{payload}, response: #{result}}"}
+      MiniProgram::ServiceResult.new(success: true, data: result)
+    end
+
+    # 「发送统一服务消息」
+    # 统一服务消息原本是可以从调用小程序的 api ，通过用户小程序的 openid 发送模板消息到小程序和公众号那里去，
+    # 现在小程序的模板消息功能关闭了，就只剩下发送模板消息到公众号这个功能了
+    #
+    def send_uniform_msg(msg, to: )
+      open_id = to.try(:open_id) || to
+
+      payload = msg.as_json
+
+      get_token_result = get_access_token
+      if get_access_token.failure?
+        return get_token_result
+      end
+
+      api = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=#{get_token_result["access_token"]}"
+      result = post(api, {
+        touser: open_id,
+        mp_template_msg: payload
+      })
+
+      msg_logger.info { "{params: #{payload}, response: #{result}}"}
       MiniProgram::ServiceResult.new(success: true, data: result)
     end
 
