@@ -52,13 +52,13 @@ module MiniProgram
 
       result = JSON.parse(response)
 
-      if result["errcode"].present?
+      if result["errcode"].to_s != "0"
         logger.error <<~ERROR
         Get access token failed.
         api: #{api} 
         error: #{result}
         ERROR
-        return MiniProgram::ServiceResult.new(success: false, data: result, message: result["errmsg"])
+        return MiniProgram::ServiceResult.new(success: false, errors: result, message: result["errmsg"])
       end
 
       MiniProgram::ServiceResult.new(success: true, data: result)
@@ -80,7 +80,7 @@ module MiniProgram
 
       result = JSON.parse(response)
 
-      if result["errcode"]
+      if result["errcode"].to_s != "0"
         logger.error <<~ERROR
         Get session key failed.
         api: #{api}
@@ -90,10 +90,6 @@ module MiniProgram
       end
 
       MiniProgram::ServiceResult.new(success: true, data: result)
-    end
-
-    def mini_program_login
-      
     end
 
     # 发送订阅消息
@@ -113,7 +109,7 @@ module MiniProgram
       api = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=#{get_token_result["access_token"]}"
       result = post(api, payload)
 
-      if result["errcode"]
+      if result["errcode"].to_s != "0"
         msg_logger.error {"{params: #{payload}, response: #{result}}"}
         return MiniProgram::ServiceResult.new(success: false, errors: result["errmsg"])
       end
@@ -142,7 +138,7 @@ module MiniProgram
         mp_template_msg: payload
       })
 
-      if result["errcode"]
+      if result["errcode"].to_s != "0"
         msg_logger.error {"{params: #{payload}, response: #{result}}"}
         return MiniProgram::ServiceResult.new(success: false, errors: result["errmsg"])
       end
