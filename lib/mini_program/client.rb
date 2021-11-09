@@ -113,6 +113,11 @@ module MiniProgram
       api = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=#{get_token_result["access_token"]}"
       result = post(api, payload)
 
+      if result["errcode"]
+        msg_logger.error {"{params: #{payload}, response: #{result}}"}
+        return MiniProgram::ServiceResult.new(success: false, errors: result["errmsg"])
+      end
+
       msg_logger.info {"{params: #{payload}, response: #{result}}"}
       MiniProgram::ServiceResult.new(success: true, data: result)
     end
@@ -136,6 +141,11 @@ module MiniProgram
         touser: open_id,
         mp_template_msg: payload
       })
+
+      if result["errcode"]
+        msg_logger.error {"{params: #{payload}, response: #{result}}"}
+        return MiniProgram::ServiceResult.new(success: false, errors: result["errmsg"])
+      end
 
       msg_logger.info { "{params: #{payload}, response: #{result}}"}
       MiniProgram::ServiceResult.new(success: true, data: result)
