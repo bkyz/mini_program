@@ -52,7 +52,7 @@ module MiniProgram
 
       result = JSON.parse(response)
 
-      if result["errcode"].to_s != "0"
+      if result["errcode"] && result["errcode"].to_s != "0"
         logger.error <<~ERROR
         Get access token failed.
         api: #{api} 
