@@ -63,7 +63,7 @@ class MiniProgram::ClientTest < ActiveSupport::TestCase
     MiniProgram::Client.any_instance.expects(:login).returns(
       MiniProgram::ServiceResult.new(success: true, data: {
         session_key: "xxx",
-        open_id: "fake openid"
+        openid: "fake openid"
       })
     )
 

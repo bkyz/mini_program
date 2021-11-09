@@ -32,7 +32,7 @@ mp = MiniProgram::Client.new
 # code 是在小程序端调用 wx.login 拿到的
 result = mp.login(code)
 if result.success?
-  open_id = result.data[:openid]
+  openid = result.data[:openid]
   session_key = result.data[:session_key]
 end
 ```
@@ -83,12 +83,12 @@ msg = MiniProgram::Msg.new(:progress, {
   detail: "测试已完成"
 })
 
-# send_to 的参数可以是 openid(字符串)，或者是带有 open_id 方法的对象，返回 MiniProgram::ServiceResult
+# send_to 的参数可以是 openid(字符串)，或者是带有 openid 方法的对象，返回 MiniProgram::ServiceResult
 result = msg.send_to("ogT7J5YddGnll-ippRvJq62Nv5W0")
 
 # or
 user = User.first
-user.open_id # => ogT7J5YddGnll-ippRvJq62Nv5W0
+user.openid # => ogT7J5YddGnll-ippRvJq62Nv5W0
 result = msg.send_to(user)
 
 if result.success?

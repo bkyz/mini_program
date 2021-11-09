@@ -94,11 +94,11 @@ module MiniProgram
 
     # 发送订阅消息
     # @param [MiniProgram::Msg] msg
-    # @param [String] to 用户的open id
+    # @param [String] to 用户的openid
     def send_msg(msg, to: )
-      open_id = to.try(:open_id) || to
+      openid = to.try(:openid) || to
 
-      payload = msg.as_json.merge!(touser: open_id)
+      payload = msg.as_json.merge!(touser: openid)
 
       # 获取 access_token
       get_token_result = get_access_token
@@ -123,7 +123,7 @@ module MiniProgram
     # 现在小程序的模板消息功能关闭了，就只剩下发送模板消息到公众号这个功能了
     #
     def send_uniform_msg(msg, to: )
-      open_id = to.try(:open_id) || to
+      openid = to.try(:openid) || to
 
       payload = msg.as_json
 
@@ -134,7 +134,7 @@ module MiniProgram
 
       api = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=#{get_token_result["access_token"]}"
       result = post(api, {
-        touser: open_id,
+        touser: openid,
         mp_template_msg: payload
       })
 
@@ -152,7 +152,7 @@ module MiniProgram
       login_result = login(code)
       return login_result if login_result.failure?
 
-      open_id = login_result.data[:openid]
+      openid = login_result.data[:openid]
       session_key = login_result.data[:session_key]
 
       data = decrypt_phone_data(encrypted_data, iv, session_key)
@@ -162,7 +162,7 @@ module MiniProgram
       MiniProgram::ServiceResult.new(
         success: true,
         data: {
-          openid: open_id,
+          openid: openid,
           phone_num: phone_num
       })
     end
