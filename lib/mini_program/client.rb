@@ -58,7 +58,7 @@ module MiniProgram
         api: #{api} 
         error: #{result}
         ERROR
-        return MiniProgram::ServiceResult.new(success: false, errors: result, message: result["errmsg"])
+        return MiniProgram::ServiceResult.new(success: false, error: result, message: result["errmsg"])
       end
 
       MiniProgram::ServiceResult.new(success: true, data: result)
@@ -86,7 +86,7 @@ module MiniProgram
         api: #{api}
         result: #{result}
         ERROR
-        return MiniProgram::ServiceResult.new(errors: result, message: result["errmsg"])
+        return MiniProgram::ServiceResult.new(error: result, message: result["errmsg"])
       end
 
       MiniProgram::ServiceResult.new(success: true, data: result)
@@ -111,7 +111,7 @@ module MiniProgram
 
       if result["errcode"].to_s != "0"
         msg_logger.error {"{params: #{payload}, response: #{result}}"}
-        return MiniProgram::ServiceResult.new(success: false, errors: result["errmsg"])
+        return MiniProgram::ServiceResult.new(success: false, error: result["errmsg"])
       end
 
       msg_logger.info {"{params: #{payload}, response: #{result}}"}
@@ -140,7 +140,7 @@ module MiniProgram
 
       if result["errcode"].to_s != "0"
         msg_logger.error {"{params: #{payload}, response: #{result}}"}
-        return MiniProgram::ServiceResult.new(success: false, errors: result["errmsg"])
+        return MiniProgram::ServiceResult.new(success: false, error: result["errmsg"])
       end
 
       msg_logger.info { "{params: #{payload}, response: #{result}}"}

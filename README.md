@@ -71,11 +71,11 @@ end
 #   page: "/pages/index/index"
 #   data:
 #     thing2:
-#     value: "%{title}"
-#   phrase4:
-#     value: "%{state}"
-#   thing1:
-#     value: "%{detail}"
+#       value: "%{title}"
+#     phrase4:
+#       value: "%{state}"
+#     thing1:
+#       value: "%{detail}"
 
 msg = MiniProgram::Msg.new(:progress, {
   title: "测试",

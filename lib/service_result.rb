@@ -1,7 +1,7 @@
 module MiniProgram
   class ServiceResult
     attr_accessor :success,
-                  :errors,
+                  :error,
                   :data,
                   :message,
                   :message_type
@@ -9,13 +9,13 @@ module MiniProgram
     delegate :[], :[]=, to: :data
 
     def initialize(success: false,
-                   errors: nil,
+                   error: nil,
                    message: nil,
                    message_type: nil,
                    data: {})
       self.success = success
       self.data = (data.presence || {}).with_indifferent_access
-      self.errors = errors.is_a?(Array) ? errors : [errors]
+      self.error = error
       self.message = message
       self.message_type = message_type
     end

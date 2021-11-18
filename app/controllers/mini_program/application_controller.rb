@@ -1,4 +1,7 @@
 module MiniProgram
-  class ApplicationController < ActionController::Base
+  class ApplicationController < ApplicationController
+    include AbstractController::Helpers
+    include ActionController::Cookies
+
   end
 end
