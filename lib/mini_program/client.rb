@@ -111,7 +111,7 @@ module MiniProgram
 
       if result["errcode"].to_s != "0"
         msg_logger.error {"{params: #{payload}, response: #{result}}"}
-        return MiniProgram::ServiceResult.new(success: false, error: result["errmsg"])
+        return MiniProgram::ServiceResult.new(success: false, error: result)
       end
 
       msg_logger.info {"{params: #{payload}, response: #{result}}"}
