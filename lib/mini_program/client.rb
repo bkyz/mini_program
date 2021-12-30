@@ -20,7 +20,7 @@ module MiniProgram
     end
 
     def get_access_token(fresh: false)
-      access_token = redis.get(access_token_store_key)
+      access_token = Rails.cache.read(access_token_store_key)
 
       if access_token.present? && !fresh
         return MiniProgram::ServiceResult.new(success: true, data: {access_token: access_token})
@@ -29,7 +29,11 @@ module MiniProgram
       result = request_access_token
 
       if result.success?
-        redis.setex access_token_store_key,  1.5.hours.to_i, result.data["access_token"]
+        # redis.setex access_token_store_key,  1.5.hours.to_i, result.data["access_token"]
+        Rails.cache.write(access_token_store_key,
+                          result.data["access_token"],
+                          expires_in: 1.5.hours.to_i,
+                          race_condition_ttl: 10)
       end
 
       yield result if block_given?
@@ -219,10 +223,6 @@ module MiniProgram
 
     def logger
       @logger ||= MiniProgram::RLogger.make("mini_program")
-    end
-
-    def redis
-      @redis ||= Redis.current
     end
 
     def access_token_store_key

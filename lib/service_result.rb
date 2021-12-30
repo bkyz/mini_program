@@ -2,6 +2,7 @@ module MiniProgram
   class ServiceResult
     attr_accessor :success,
                   :error,
+                  :error_type,
                   :data,
                   :message,
                   :message_type
@@ -44,6 +45,17 @@ module MiniProgram
       else
         :error
       end
+    end
+
+    def as_json(options = nil)
+      {
+        success: success,
+        data: data,
+        message: message,
+        message_type: get_message_type,
+        error: error,
+        error_type: error_type
+      }
     end
   end
 end

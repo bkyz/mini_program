@@ -6,7 +6,6 @@ require "mini_program/user"
 require "application_controller_ext"
 require "r_logger"
 require "service_result"
-require "redis"
 require "mocha"
 
 module MiniProgram
