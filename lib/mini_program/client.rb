@@ -195,7 +195,7 @@ module MiniProgram
       end
 
       Net::HTTP.get(uri)
-    end
+    end 
 
     def post(api, payload = {}, options = {})
       uri = URI(api)
@@ -205,12 +205,17 @@ module MiniProgram
       options = {
         use_ssl: true
       }.merge(options)
-
+       
       res = Net::HTTP.start(uri.host, uri.port, **options) do |http|
         http.request(req, payload.to_json)
+      end  
+
+      if res["Content-Type"] == "image/jpeg" 
+        res
+        return res
       end
 
-      JSON.parse(res.body)
+      JSON.parse(res.body) 
     end
 
     def decrypt_phone_data(encrypted_data, iv, session_key)
