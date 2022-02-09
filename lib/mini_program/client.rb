@@ -203,18 +203,14 @@ module MiniProgram
 
       result = post(api, payload)    
 
-      if result["errcode"]
+      if !result["errcode"].nil? && result["errcode"].to_s != "0" 
         msg_logger.error {"{params: #{payload}, response: #{result}}"}
         return MiniProgram::ServiceResult.new(success: false, error: result)
       end
-      
-      #TODO 在result中获取文件流返回 
-     
-      msg_logger.info { "{params: #{payload}, response: #{result}}"}
-      MiniProgram::ServiceResult.new(success: true, data: result)
+       
+      MiniProgram::ServiceResult.new(success: true, data: { image: result })
     end
-
-
+     
     private
 
     def get(api, payload = {})
@@ -239,12 +235,9 @@ module MiniProgram
       res = Net::HTTP.start(uri.host, uri.port, **options) do |http|
         http.request(req, payload.to_json)
       end  
-
-      if res["Content-Type"] == "image/jpeg" 
-        res
-        return res
-      end
-
+     
+      return res.body if res["Content-Type"] == "image/jpeg"
+      
       JSON.parse(res.body) 
     end
 
