@@ -203,7 +203,7 @@ module MiniProgram
 
       result = post(api, payload)    
 
-      if !result["errcode"].nil? && result["errcode"].to_s != "0" 
+      if result["errcode"]
         msg_logger.error {"{params: #{payload}, response: #{result}}"}
         return MiniProgram::ServiceResult.new(success: false, error: result)
       end
