@@ -208,8 +208,7 @@ module MiniProgram
         return MiniProgram::ServiceResult.new(success: false, error: result)
       end
       
-      #TODO 在result中获取文件流返回
-      puts "success"
+      #TODO 在result中获取文件流返回 
      
       msg_logger.info { "{params: #{payload}, response: #{result}}"}
       MiniProgram::ServiceResult.new(success: true, data: result)
