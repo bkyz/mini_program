@@ -185,6 +185,32 @@ module MiniProgram
       Struct.new(:appid, :app_secret).new(appid, app_secret)
     end
 
+    #获取小程序二维码
+    def qrcode_unlimited(data)
+      get_token_result = get_access_token
+      if get_access_token.failure?  
+        return get_token_result
+      end
+       
+      api = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=#{get_token_result["access_token"]}"
+      params = { 
+        scene: data[:scene],
+        page: data[:page],   
+        width: data[:width].blank? ? 280 : data[:width]
+      }
+      
+      payload = params.as_json  
+
+      result = post(api, payload)    
+
+      if !result["errcode"].nil? && result["errcode"].to_s != "0" 
+        msg_logger.error {"{params: #{payload}, response: #{result}}"}
+        return MiniProgram::ServiceResult.new(success: false, error: result)
+      end
+       
+      MiniProgram::ServiceResult.new(success: true, data: { image: result })
+    end
+     
     private
 
     def get(api, payload = {})
@@ -195,7 +221,7 @@ module MiniProgram
       end
 
       Net::HTTP.get(uri)
-    end
+    end 
 
     def post(api, payload = {}, options = {})
       uri = URI(api)
@@ -205,12 +231,14 @@ module MiniProgram
       options = {
         use_ssl: true
       }.merge(options)
-
+       
       res = Net::HTTP.start(uri.host, uri.port, **options) do |http|
         http.request(req, payload.to_json)
-      end
-
-      JSON.parse(res.body)
+      end  
+     
+      return res.body if res["Content-Type"] == "image/jpeg"
+      
+      JSON.parse(res.body) 
     end
 
     def decrypt_phone_data(encrypted_data, iv, session_key)
