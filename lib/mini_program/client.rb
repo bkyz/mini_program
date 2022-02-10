@@ -186,27 +186,26 @@ module MiniProgram
     end
 
     #获取小程序二维码
-    def qrcode_unlimited(data)
+    def qrcode_unlimited(scene:, page:, width: 280, check_path: true, env_version: "release") 
       get_token_result = get_access_token
       if get_access_token.failure?  
         return get_token_result
       end
        
       api = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=#{get_token_result["access_token"]}"
+       
       params = { 
-        scene: data[:scene],
-        page: data[:page],   
-        width: data[:width].blank? ? 280 : data[:width],
-        check_path: data[:check_path],
-        env_version: data[:env_version]
+        scene:,
+        page:,   
+        width:,
+        check_path:,
+        env_version:
       }
-      
-      payload = params.as_json  
+       
+      result = post(api, params)    
 
-      result = post(api, payload)    
-
-      if result["errcode"]
-        msg_logger.error {"{params: #{payload}, response: #{result}}"}
+      if result["errcode"] 
+        msg_logger.error {"{params: #{params}, response: #{result}}"}
         return MiniProgram::ServiceResult.new(success: false, error: result)
       end
        
