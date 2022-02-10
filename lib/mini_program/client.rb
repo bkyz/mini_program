@@ -197,8 +197,8 @@ module MiniProgram
         scene: data[:scene],
         page: data[:page],   
         width: data[:width].blank? ? 280 : data[:width],
-        check_path: data[:check_path].blank? ? true : data[:check_path],
-        env_version: data[:env_version].blank? ? "release" : data[:env_version]
+        check_path: data[:check_path],
+        env_version: data[:env_version]
       }
       
       payload = params.as_json  
