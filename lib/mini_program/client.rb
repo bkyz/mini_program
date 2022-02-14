@@ -138,14 +138,14 @@ module MiniProgram
         msg_logger.error { "{params: #{payload}, response: #{result}}" }
         MiniProgram::ServiceResult.new(success: false,
                                        error: result,
-                                       message: "发送订阅消息成功",
-                                       message_kind: :send_subscribed_message_success)
+                                       message: "发送订阅消息失败",
+                                       message_kind: :send_subscribed_message_failed)
       else
         msg_logger.info { "{params: #{payload}, response: #{result}}" }
         MiniProgram::ServiceResult.new(success: true,
                                        data: result,
-                                       message: "发送订阅消息失败",
-                                       message_kind: :send_subscribed_message_failed)
+                                       message: "发送订阅消息成功",
+                                       message_kind: :send_subscribed_message_success)
       end
 
     end
