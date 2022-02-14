@@ -15,9 +15,12 @@ module MiniProgram
 
         after_mp_login if respond_to? :after_mp_login
 
-        render json: current_mp_user
+        render json: ServiceResult.new(success: true,
+                                       data: { current_user: current_mp_user },
+                                       message: "登录成功",
+                                       message_kind: :login_success)
       else
-        render json: { error: result.error }
+        render json: result, status: 500
       end
     end
 
@@ -29,9 +32,9 @@ module MiniProgram
       if result.success?
         cookies.signed[:phone_num] = result.data[:phone_num]
 
-        render json: result.data
+        render json: result
       else
-        render json: { error: result.error }
+        render json: result, status: 500
       end
     end
   end

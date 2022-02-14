@@ -2,9 +2,9 @@ module MiniProgram
   class ServiceResult
     attr_accessor :success,
                   :error,
-                  :error_type,
                   :data,
                   :message,
+                  :message_kind,
                   :message_type
 
     delegate :[], :[]=, to: :data
@@ -13,12 +13,15 @@ module MiniProgram
                    error: nil,
                    message: nil,
                    message_type: nil,
+                   message_kind: nil,
                    data: {})
+
       self.success = success
       self.data = (data.presence || {}).with_indifferent_access
       self.error = error
       self.message = message
       self.message_type = message_type
+      self.message_kind = message_kind
     end
 
     alias success? :success
@@ -49,12 +52,12 @@ module MiniProgram
 
     def as_json(options = nil)
       {
-        success: success,
-        data: data,
-        message: message,
+        success:,
+        data:,
+        message:,
         message_type: get_message_type,
-        error: error,
-        error_type: error_type
+        message_kind:,
+        error:,
       }
     end
   end
