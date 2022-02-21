@@ -1,0 +1,2 @@
+
+class InitializeDenied < StandardError; end

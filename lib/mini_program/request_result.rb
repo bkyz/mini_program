@@ -1,0 +1,4 @@
+
+class MiniProgram::RequestResult
+
+end

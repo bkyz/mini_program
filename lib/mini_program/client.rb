@@ -62,11 +62,13 @@ module MiniProgram
       result = JSON.parse(response)
 
       if result["errcode"] && result["errcode"].to_s != "0"
-        logger.error <<~ERROR
+        logger.tagged "request access token" do
+          logger.error <<~ERROR
           Get access token failed.
           api: #{api} 
           error: #{result}
-        ERROR
+          ERROR
+        end
 
         MiniProgram::ServiceResult.new(success: false,
                                        error: result,
@@ -97,6 +99,7 @@ module MiniProgram
       result = JSON.parse(response)
 
       if result["errcode"] && result["errcode"].to_s != "0"
+        logger.tagged "login mini program"
         logger.error <<~ERROR
           Get session key failed.
           api: #{api}
@@ -135,15 +138,23 @@ module MiniProgram
       result = post(api, payload)
 
       if result["errcode"].to_s != "0"
-        msg_logger.error { "{params: #{payload}, response: #{result}}" }
+        logger.tagged "Subscribe Message" do
+          logger.error { "{params: #{payload}, response: #{result}}" }
+        end
+
         MiniProgram::ServiceResult.new(success: false,
                                        error: result,
                                        message: "发送订阅消息失败",
                                        message_kind: :send_subscribed_message_failed)
       else
-        msg_logger.info { "{params: #{payload}, response: #{result}}" }
+        logger.tagged "Subscribe Message" do
+          logger.info { "{params: #{payload}, response: #{result}}" }
+        end
+
         MiniProgram::ServiceResult.new(success: true,
-                                       data: result,
+                                       data: {
+                                         msgid: result.data["msgid"]
+                                       },
                                        message: "发送订阅消息成功",
                                        message_kind: :send_subscribed_message_success)
       end
@@ -171,7 +182,10 @@ module MiniProgram
       })
 
       if result["errcode"].to_s != "0"
-        msg_logger.error { "{params: #{payload}, response: #{result}}" }
+        logger.tagged "uniform message" do
+          logger.error { "{params: #{payload}, response: #{result}}" }
+        end
+
         MiniProgram::ServiceResult.new(success: false,
                                        error: result["errmsg"],
                                        message: "发送统一服务消息失败",
@@ -224,30 +238,24 @@ module MiniProgram
 
     #获取小程序二维码
     def qrcode_unlimited(scene:, page:, width: 280, check_path: true, env_version: "release")
-      get_token_result = get_access_token
-      if get_access_token.failure?
-        return get_token_result
+      get_token_result = get_access_token.on_failure do |result|
+        return result
       end
 
       api = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=#{get_token_result["access_token"]}"
 
-      params = {
-        scene:,
-        page:,
-        width:,
-        check_path:,
-        env_version:
-      }
+      params = { scene:, page:, width:, check_path:, env_version: }
 
       result = post(api, params)
 
       if result["errcode"]
-        msg_logger.error { "{params: #{params}, response: #{result}}" }
+        logger.error { "{ action: 'generate qrcode', params: #{params}, response: #{result}}" }
         MiniProgram::ServiceResult.new(success: false,
                                        error: result,
                                        message: "获取二维码失败",
                                        message_kind: :get_unlimited_qrcode_failed)
       else
+        logger.info { "{ action: 'generate qrcode',  params: #{params}, response: #{result} }" }
         MiniProgram::ServiceResult.new(success: true,
                                        data: { image: result },
                                        message: "获取二维码成功",

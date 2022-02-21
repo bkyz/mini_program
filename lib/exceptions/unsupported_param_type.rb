@@ -1,0 +1,2 @@
+
+class UnsupportedParamType < StandardError; end
