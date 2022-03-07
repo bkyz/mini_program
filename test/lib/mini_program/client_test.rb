@@ -54,7 +54,7 @@ class MiniProgram::ClientTest < ActiveSupport::TestCase
     assert_equal second_access_token, client.get_access_token(fresh: true).data["access_token"]
   end
 
-  test "#get_phone_num on get session key success" do
+  test "#decrypt_phone_num on get session key success" do
     phone_num = "13071511222"
     MiniProgram::Client.any_instance.expects(:decrypt_phone_data).returns({"phoneNumber"=>phone_num,
                                                                            "purePhoneNumber"=>phone_num,
@@ -67,16 +67,16 @@ class MiniProgram::ClientTest < ActiveSupport::TestCase
       })
     )
 
-    result = MiniProgram::Client.new.get_phone_num(encrypted_data: "placeholder", iv: "placeholder", code: "placeholder")
+    result = MiniProgram::Client.new.decrypt_phone_num(encrypted_data: "placeholder", iv: "placeholder", code: "placeholder")
 
     assert_equal phone_num, result.data["phone_num"]
   end
 
-  test "#get_phone_num on get session key failed" do
-    mock_result = MiniProgram::ServiceResult.new(success: false, data: {}, errors: { "errmsg" => "some errors occur" }, message: "some errors occur")
+  test "#decrypt_phone_num on get session key failed" do
+    mock_result = MiniProgram::ServiceResult.new(success: false, data: {}, error: { "errmsg" => "some errors occur" }, message: "some errors occur")
     MiniProgram::Client.any_instance.expects(:login).returns(mock_result)
 
-    result = MiniProgram::Client.new.get_phone_num(encrypted_data: "placeholder", iv: "placeholder", code: "placeholder")
+    result = MiniProgram::Client.new.decrypt_phone_num(encrypted_data: "placeholder", iv: "placeholder", code: "placeholder")
 
     assert_equal mock_result, result
   end

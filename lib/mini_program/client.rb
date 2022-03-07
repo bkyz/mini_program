@@ -201,7 +201,7 @@ module MiniProgram
     end
 
     # 获取用户手机号
-    def get_phone_num(code:, encrypted_data:, iv:)
+    def decrypt_phone_num(code:, encrypted_data:, iv:)
       login_result = login(code)
       return login_result if login_result.failure?
 
@@ -214,12 +214,19 @@ module MiniProgram
 
       MiniProgram::ServiceResult.new(
         success: true,
-        message: "获取手机号成功",
-        message_kind: :get_phone_number_success,
+        message: "解密手机号成功",
+        message_kind: :decrypt_phone_number_success,
         data: {
           openid: openid,
           phone_num: phone_num
         })
+    rescue OpenSSL::Cipher::CipherError => e
+      MiniProgram::ServiceResult.new(
+        success: false,
+        message: "解密手机号失败",
+        message_kind: :decrypt_phone_data_failed,
+        error: e
+      )
     end
 
     def config

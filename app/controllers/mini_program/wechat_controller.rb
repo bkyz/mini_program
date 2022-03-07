@@ -27,7 +27,7 @@ module MiniProgram
     # POST /wechat/phone_num
     def phone_num
       client = MiniProgram::Client.new
-      result = client.get_phone_num(code: params[:code], encrypted_data: params[:encrypted_data], iv: params[:iv])
+      result = client.decrypt_phone_num(code: params[:code], encrypted_data: params[:encrypted_data], iv: params[:iv])
 
       if result.success?
         cookies.signed[:phone_num] = result.data[:phone_num]

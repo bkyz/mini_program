@@ -34,7 +34,7 @@ module MiniProgram
         "open_id" => "xxx",
         "phone_num" => phone_num
       })
-      MiniProgram::Client.any_instance.expects(:get_phone_num).returns(mock_result)
+      MiniProgram::Client.any_instance.expects(:decrypt_phone_num).returns(mock_result)
 
       post wechat_phone_num_url
 

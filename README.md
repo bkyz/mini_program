@@ -48,7 +48,7 @@ code = "041PuvGa1rysrB0noDJa1n7RBv2PuvGe"
 encrypted_data = "3G/+Fh6kCBaQszXFTxz3h3HFSbu0UuVW/4aLbz8WGzrKfmbGpvnxYHAa4QrKXJvHpB++3ogOYoU6iiG+1HW18Lkt9qEJE9GyRw5OnuXSjTnUIPSRROT3sxeAYnT1kf4ngTAfrD3f4TFtLXkRIrrc1MzSqx/LV8iXA8Lu5Y+7kZx26eulz3yVrlXDH3BOIX6zcGOeprsK5XzDx2ltmf3j5w=="
 iv = "5tiyfVEHNVgHN4n8lzDrUA=="
 
-result = mp.get_phone_num(code: code, encrypted_data: encrypted_data, iv: iv)
+result = mp.decrypt_phone_num(code: code, encrypted_data: encrypted_data, iv: iv)
 
 if result.success?
   phone_num = result.data[:phone] 
