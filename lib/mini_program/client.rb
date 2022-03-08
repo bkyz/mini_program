@@ -220,7 +220,7 @@ module MiniProgram
           openid: openid,
           phone_num: phone_num
         })
-    rescue OpenSSL::Cipher::CipherError => e
+    rescue OpenSSL::Cipher::CipherError, ArgumentError => e
       MiniProgram::ServiceResult.new(
         success: false,
         message: "解密手机号失败",
