@@ -187,7 +187,7 @@ module MiniProgram
         end
 
         MiniProgram::ServiceResult.new(success: false,
-                                       error: result["errmsg"],
+                                       error: result,
                                        message: "发送统一服务消息失败",
                                        message_kind: :send_uniform_message_failed)
       else
