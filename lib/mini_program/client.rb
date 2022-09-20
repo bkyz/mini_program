@@ -153,7 +153,7 @@ module MiniProgram
 
         MiniProgram::ServiceResult.new(success: true,
                                        data: {
-                                         msgid: result.data["msgid"]
+                                         msgid: result["msgid"]
                                        },
                                        message: "发送订阅消息成功",
                                        message_kind: :send_subscribed_message_success)
