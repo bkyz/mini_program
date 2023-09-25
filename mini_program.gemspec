@@ -3,8 +3,8 @@ require_relative "lib/mini_program/version"
 Gem::Specification.new do |spec|
   spec.name        = "mini_program"
   spec.version     = MiniProgram::VERSION
-  spec.authors     = ["ian"]
-  spec.email       = ["ianlynxk@gmail.com"]
+  spec.authors     = ["liang"]
+  spec.email       = ["wangekko@gmail.com"]
   spec.homepage    = "https://github.com/bkyz/mini_program"
   spec.summary     = "a engine for develop mini program"
   spec.description = "include login, send subscribe message, get phone number function of mini program"
