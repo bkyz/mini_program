@@ -175,7 +175,7 @@ module MiniProgram
         return get_token_result
       end
 
-      api = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=#{get_token_result["access_token"]}"
+      api = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=#{get_token_result["access_token"]}"
       result = post(api, {
         touser: openid,
         mp_template_msg: payload
