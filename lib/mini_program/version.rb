@@ -1,3 +1,3 @@
 module MiniProgram
-  VERSION = '1.4.5'
+  VERSION = '1.8.0'
 end
